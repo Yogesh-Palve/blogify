@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <%- include("./partials/head") %>
+    <title><%= blog.title %></title>
+    <style>
+      .blog-container {
+        max-width: 80vw;
+        margin: 2rem auto;
+        padding: 1rem;
+      }
+      .blog-card {
+        display: flex;
+        justify-content: center;
+      }
+      .blog-card img {
+        width: 100%;
+        max-width: 500px;
+        height: auto;
+        border-radius: 5px;
+        object-fit: cover;
+      }
+      .blog-body {
+        margin-top: 2rem;
+        white-space: pre-wrap;
+        word-wrap: break-word;
+        font-size: 1rem;
+        line-height: 1.6;
+      }
+    </style>
+  </head>
+
+  <body>
+    <%- include("./partials/nav") %>
+
+    <div class="blog-container">
+      <h3 class="text-center mb-3"><%= blog.title %></h3>
+
+      <div class="blog-card">
+        <img
+          src="<%= blog.coverImageURL %>"
+          alt="Cover image for <%= blog.title %>"
+        />
+      </div>
+
+      <div class="blog-body"><%= blog.body %></div>
+
+      <div class="container mt-4 p-3 border rounded shadow-sm bg-light">
+        <!-- Author Section -->
+        <div class="d-flex align-items-center">
+          <h5 class="me-2 mb-0 text-secondary">By</h5>
+          <img
+            src="<%= blog.createdBy.profileImageURL %>"
+            alt="Author Image"
+            class="rounded-circle me-2 border"
+            width="45"
+            height="45"
+          />
+          <span class="fw-semibold text-dark"
+            ><%= blog.createdBy.fullName %></span
+          >
+        </div>
+      </div>
+
+      <!-- Comments Section -->
+      <div class="container mt-4">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+          <h4 class="mb-0">Comments (<%= comments.length %>)</h4>
+        </div>
+
+        <% if (locals.user) { %>
+        <form method="post" action="/blog/comment/<%= blog._id %>" class="mb-4">
+          <div class="input-group">
+            <input
+              type="text"
+              name="content"
+              id="content"
+              class="form-control"
+              placeholder="Write a comment..."
+              required
+            />
+            <button type="submit" class="btn btn-primary">Add</button>
+          </div>
+        </form>
+        <% } %>
+
+        <!-- Comment List -->
+        <% comments.forEach(comment => { %>
+        <div class="d-flex align-items-start mb-3 border-bottom pb-2">
+          <img
+            src="<%= comment.createdBy.profileImageURL %>"
+            alt="User Image"
+            class="rounded-circle me-2 border"
+            width="40"
+            height="40"
+          />
+          <div>
+            <span class="fw-semibold"><%= comment.createdBy.fullName %></span
+            ><br />
+            <span class="text-muted"><%= comment.content %></span>
+          </div>
+        </div>
+        <% }) %>
+      </div>
+
+      <div style="text-align: center; margin-top: 2rem">
+        <a href="/" class="btn btn-primary">← Back to Home</a>
+      </div>
+    </div>
+
+    <%- include("./partials/scripts") %>
+  </body>
+</html>
