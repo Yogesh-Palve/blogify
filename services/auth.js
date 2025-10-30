@@ -1,7 +1,5 @@
 const JWT = require("jsonwebtoken")
-
-const secret = "$uperMan@123" // confidential should not be shared 
-
+const secret = process.env.JWT_SECRET // confidential should not be shared 
 function createTokenForUser(user) {
     const payload = {
         _id : user._id,
