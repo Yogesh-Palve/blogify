@@ -19,9 +19,7 @@ router.post("/signup", async (req, res) => {
     if (existingUser) {
       return res.render("signup", { error: "Email already registered." });
     }
-
-    const hashedPassword = await bcrypt.hash(password, 10);
-    await User.create({ fullName, email, password: hashedPassword });
+    await User.create({ fullName, email, password });
     return res.redirect("/user/signin");
   } catch (err) {
     console.error(err);
